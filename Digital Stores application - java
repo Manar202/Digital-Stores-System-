@@ -1,0 +1,788 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		//Darwing 
+		char escCode = 0x1B;
+		int r = 14, c= 16, choice;
+		//Start of program
+  
+		ArrayList<Owner> owners = new ArrayList<> (20);
+		ArrayList<Client> clients = new ArrayList<> (20);
+		
+		//1sr
+		//String [ ] NAME = { "Manar", "Ahmed", "Zaki"}; 
+//        String [ ] OTHERDATA = {"1111" , "Manar@gmail", "05555", "KSA", "Qatif" , "12345"};
+//        int [ ] BIRTH = {12, 11, 2002}; 
+//        int UserType = 0;
+//		owners.add(new Owner(0, NAME, BIRTH, UserType, OTHERDATA));
+//		owners.get(0).setUserID(0);
+//		//2ed 
+//		String [ ] name = { "Ali", "Mohamed", "Noor"}; 
+//        String [ ] OtherData = { "2222", "Ali@gmail", "056777", "KSA", "Dmmam" , "12345"};
+//        int [ ] birth = {12, 11, 2002}; 
+//        int usertype = 0;
+//		owners.add(new Owner(0, NAME, BIRTH, UserType, OTHERDATA));
+//		owners.get(1).setUserID(1);
+//		
+
+		Scanner input =new Scanner(System.in); 
+		Modify tool = new Modify();
+		String_info strings = new String_info(); 
+		
+		do {
+    		    
+    		System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+    		System.out.print( String.format("%c[%d;%df",escCode, 10, 20)+ "Would you like to Sing in (1) , Sing up (2), exit (3) ?  ");
+    		 choice = input.nextInt();
+    		
+    		
+    		//1st IF
+    		if(choice == 1)  {
+    		    String ID = tool.CheckVal(owners, clients);
+    		    boolean userIsOwner = false; 
+    		    for(int i=0; i<owners.size(); i++) {
+                            if ( (ID.equals(owners.get(i).userID))) {
+                                userIsOwner  = true;
+                                break;
+                            }
+                       }
+                       
+                //if(userIsOwner) {
+//                    
+//                }//end IF for owner
+//                else {
+//                    
+//                }//end else for client
+                
+    		}//end IF sing in 
+    		    
+    		
+    		//2ed IF
+    		else if (choice == 2) {
+    		    Helpper mainHelp = tool.CreatPersonObj(); 
+    		    if(mainHelp.in1 == 0) {
+    		        owners.add(new Owner (mainHelp.in1, mainHelp.arrays, mainHelp.arrayi, mainHelp.in1));
+    		        int index = owners.size() -1; //find the index of the object
+    		        tool.CreatStore(index);
+    		        owners.get(index).creatStoreObj(new Store( mainHelp.str1 , mainHelp.arrayi)) ;//create store
+    		        owners.get(index).store.setStoreID(index);//store id
+    		        owners.get(index).setUserID(index); //user id
+    		    }
+    		        
+    		     else {
+    		         clients.add(new Client (mainHelp.in1, mainHelp.arrays, mainHelp.arrayi, mainHelp.in1));
+    		         int index = clients.size() -1; 
+    		        clients.get(index).setUserID(index); } //user id 
+ 
+    		    } //end IF sing up
+             else {
+                System.out.print("\033[H\033[2J");  
+                System.out.flush();
+    		    System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Thank you for visiting Digital Stores*** ");
+    		     System.out.print( String.format("%c[%d;%df",escCode, 8, 35)+ "The End");
+                
+             }
+                
+                
+		} while(choice != 3);
+            
+
+		
+		
+	}
+}
+class Modify {
+            char escCode = 0x1B;
+	    	int r = 14, c= 16, choice;
+    		//Start of program
+    		
+    		Scanner input =new Scanner(System.in); 
+    		String_info strings = new String_info(); 
+    		
+    		
+    		void Saleadd (Store store) {
+    		            
+        		        System.out.print("\033[H\033[2J");  
+                        System.out.flush();
+        		        System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+        		    
+            		     System.out.print( String.format("%c[%d;%df",escCode, 10, 30)+ "Please  enter the sale information");
+            		     
+            		     String name= null, des = null;
+            		     double price=0 , time=0;
+            	
+            		     
+            		     for(int i=0; i< strings.Sale_info.length;  i++) {
+        		          r= r+2;
+        		          System.out.print( String.format("%c[%d;%df",escCode, r+1, c) + "-------------------------------------------------");
+            		    System.out.print( String.format("%c[%d;%df",escCode, r+2, c)+  strings.Sale_info[i] + "  |  ");
+            		    switch(i+1) {
+            		        case 1: 
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		             name = input.nextLine();
+            		            break;
+            		        case 2:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		            des = input.nextLine();
+            		             
+            		            break;
+            		            
+            		        case 3:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		             price = input.nextDouble();
+         
+            		             break;
+            		         case 4:
+            		             time = input.nextDouble();
+            		             break;
+            		        
+            		    }//end of switch 
+            		    
+            		    
+    		    }//end of For
+    		    
+    		    
+    		    store.addSale(name, des, price, time);
+		        
+		    
+		    }//end of function 
+		    
+		    
+		    
+		    void SaleEdit (Store store) {
+    		            
+        		        System.out.print("\033[H\033[2J");  
+                        System.out.flush();
+        		        System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+        	
+            		     System.out.print( String.format("%c[%d;%df",escCode, 10, 30)+ "Please  enter the number of feild you want to edit: ");
+            		     int choice = input.nextInt();
+            		     
+            		     System.out.print( String.format("%c[%d;%df",escCode, 10, 30)+ "Please  enter the number of sale you want to edit: ");
+            		     int index = input.nextInt();
+            		     index --;
+            	
+            	
+            		     
+            		     for(int i=0; i< strings.Sale_info.length;  i++) {
+        		          r= r+i; 
+            		    System.out.print( String.format("%c[%d;%df",escCode, r, c)+  strings.Sale_info[i] );
+            		     }
+            		     System.out.print( String.format("%c[%d;%df",escCode, r+2, c)+  "New " + strings.Sale_info[choice] );
+            		     
+            		    String str= null;
+            		    double num=0;
+            		    
+            		    switch(choice ) {
+            		        case 1: 
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+10));
+            		             str = input.nextLine();
+            		            break;
+            		        case 2:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+10));
+            		            str = input.nextLine();
+            		             
+            		            break;
+            		            
+            		        case 3:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+10));
+            		             num = input.nextDouble();
+         
+            		             break;
+            		         case 4:
+            		             
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+10));
+            		             num = input.nextDouble();
+            		             break;
+            		        
+            		    }//end of switch 
+            		  
+            		    store.editSale(choice, index , str, num);
+           
+		      
+		    }//end of function 
+		    
+		    
+		    void Saleremove (Store store) {
+    		            
+        		        System.out.print("\033[H\033[2J");  
+                        System.out.flush();
+        		        System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+        	
+            		     
+            		     System.out.print( String.format("%c[%d;%df",escCode, 10, 30)+ "Please  enter the number of sale you want to remov ");
+            		     int index = input.nextInt();
+            		     index --;
+            	
+            
+            		    store.sales.remove(index);
+           
+		      
+		    }//end of function 
+		    
+		    
+		    
+    		
+    		Helpper CreatPersonObj () {
+    		  		
+    		  		Helpper help= new Helpper();
+        		System.out.print("\033[H\033[2J");  
+                System.out.flush();
+    		    System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+    		    
+    		    
+    		    
+    		     
+    		     System.out.print( String.format("%c[%d;%df",escCode, 10, 25)+ "Are you store owner (1) OR client (2) ? ");
+    		     help.in1 = input.nextInt(); //typeUser 0 for owner 1 for client
+    		     if(help.in1 == 1)
+    		         help.in1  = 0; 
+    		     else 
+    		        help.in1  = 1; 
+    
+    		     
+    		    for(int i=0; i< strings.Per_info.length;  i++) {
+    		          r= r+2;
+    		          System.out.print( String.format("%c[%d;%df",escCode, r+1, c) + "-------------------------------------------------");
+        		    System.out.print( String.format("%c[%d;%df",escCode, r+2, c)+  strings.Per_info[i] +  String.format("%c[%d;%df",escCode, r+2, c+10) +"  |  ");
+        		    switch(i+1) {
+        		        case 1: 
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		             help.in2 = input.nextInt(); //for Gender
+        		            break;
+        		        case 2:
+        		            
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		            help.arrays[0] = input.next();
+        		            help.arrays[1] = input.next();
+        		            help.arrays[2] = input.next();
+        		            
+        		            break;
+        		            
+        		        case 3:
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		            help.arrayi[0] = input.nextInt();
+        		            help.arrayi[1] = input.nextInt();
+        		            help.arrayi[2] = input.nextInt();
+        		             break;
+        		        case 4: 
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		           
+        		            help.arrays[3] = input.next();
+        		            break;
+        		        case 5:
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		            help.arrays[4] = input.next();
+        		            break;
+        		        case 6:
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		             help.arrays[5] = input.next();
+        		            break;
+        		        case 7:
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		            help.arrays[6] = input.next();
+        		            break;
+        		            
+        		        case 8: 
+        		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+        		            help.arrays[7]  = input.next();
+        		            break;
+        		            
+        		    }//end of switch 
+        		    
+        		  
+    		    }//end of For
+    		    
+    		    return help;
+    		}// end of function 
+    		
+    		
+    		void CreatStore(int id) {
+    		            
+    		            Helpper help= new Helpper();
+        		        System.out.print("\033[H\033[2J");  
+                        System.out.flush();
+        		        System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+        		    
+            		     System.out.print( String.format("%c[%d;%df",escCode, 10, 30)+ "Please enter your store information ");
+            		     
+            	
+            		     
+            		     for(int i=0; i< strings.Store_info.length;  i++) {
+        		          r= r+2;
+        		          System.out.print( String.format("%c[%d;%df",escCode, r+1, c) + "-------------------------------------------------");
+            		    System.out.print( String.format("%c[%d;%df",escCode, r+2, c)+  strings.Store_info[i] + "  |  ");
+            		    switch(i+1) {
+            		        case 1: 
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		             help.str1 = input.nextLine();
+            		            break;
+            		        case 2:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		            help.arrayi[0] = input.nextInt();
+            		             
+            		            break;
+            		            
+            		        case 3:
+            		            System.out.print( String.format("%c[%d;%df",escCode, r+2, c+15));
+            		             help.arrayi[1] = input.nextInt();
+         
+            		             break;
+            		        
+            		    }//end of switch 
+            		    
+            		    
+    		    }//end of For
+    		    
+    		    help.arrayi[2] = id;
+    		    
+		        
+		    
+		    }//end of function 
+		    
+		    
+		    
+ 
+                
+            //Check validation of sing in user
+            String CheckVal(ArrayList<Owner> owners, ArrayList<Client> clients) {
+                boolean Validation= false;
+    		    int typeUser;
+    		    String returnValue;
+    		    do {
+    		        
+        		    System.out.print("\033[H\033[2J");  
+                    System.out.flush();
+                    System.out.print( String.format("%c[%d;%df",escCode, 6, 30)+ "***Wellcome to Digital Stores*** ");
+                    System.out.print( String.format("%c[%d;%df",escCode, 10, 28)+ "Are you store owner (1) OR client (2) ? ");
+    		         typeUser = input.nextInt();
+    		       
+             
+                    System.out.print( String.format("%c[%d;%df",escCode, r, c)+ "User ID: " + String.format("%c[%d;%df",escCode, r +1, c) + "Password: " );
+                 
+                     String Val [] = new String [2]; 
+                    for(int i=0; i<2; i++) {
+                        System.out.print( String.format("%c[%d;%df",escCode, r+i, c+10));
+                        Val[i] = input.next(); 
+                        
+                    }
+                    returnValue = Val[1];
+                    if(typeUser == 0) {
+                      
+                        for(int i=0; i<owners.size(); i++) {
+                            if ((Val[1].equals( owners.get(i).getpassword() ) )&& (Val[0].equals(owners.get(i).userID))) {
+                                Validation = true; 
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                      
+                        for(int i=0; i<clients.size(); i++) {
+                            if ((Val[1].equals( clients.get(i).getpassword() ) )&& (Val[0].equals(clients.get(i).userID))) {
+                                Validation = true; 
+                                break;
+                            }
+                        }
+                        
+                    }
+                    if(Validation == false) 
+                        System.out.print( String.format("%c[%d;%df",escCode, r+4, 30) + "Either user id or passeord is wrong! " + String.format("%c[%d;%df",escCode, r+5, 25) + "Enter 1 if you want to try again or 0 to exit: "); 
+                        choice = input.nextInt();
+    		} while((choice == 1) && (Validation == false));
+    		if(Validation == false) {
+    		    return returnValue = null;}
+    		else 
+    		    return returnValue;
+                
+		}
+
+}
+
+class Helpper {
+    static int in1 =0;
+    static int in2 =0; 
+    static int in3 =0; 
+    static int in4 =0;
+    static int in5 =0; 
+    static int in6 =0; 
+    
+    static int [] arrayi= new int [10];
+    
+    static String str1;
+    static String  str2;
+    static String  str3;
+    static String  [] arrays= new String [10];
+    
+    static double d1=0;
+    static double d2=0; 
+    static double d3=0; 
+    static double [] arrayd= new double [10];
+    
+}
+
+
+class Owner extends Person {
+    int userID; 
+   
+    Store store = new Store(); 
+    
+    //Constructors
+    Owner() {}
+    Owner (int A, String [] B , int [] C, int D) {
+        super(A, B, C, D );
+    }
+    //Metheds
+    void creatStoreObj (Store store) {
+        this.store = store ; 
+    }
+    void setUserID(int index) {
+        userID = (++index); 
+    }
+    
+}
+
+class Client extends Person {
+    int userID; 
+    
+    //Constructrs
+    Client(){}
+    Client (int A, String [] B , int [] C, int D) {
+        super(A, B, C, D );
+        
+    }
+    
+  //Metheds
+    void setUserID(int index) {
+        userID = (++index); 
+    }
+    
+    
+}
+
+
+
+class Person extends BanckAc { 
+    
+    Gender gender ;
+    Name name ;
+    Birth birth ;
+    private String password;
+    int typeUser; //0 owner 1 client
+    String personID; //national ID
+    String email;
+    String phoNum;
+    String country;
+    String city;
+    
+    //Constructors
+    Person() {}
+    Person(int A, String [] B, int [] C, int D) {
+     
+    
+     if(A == 0) //0 for F 
+        gender = Gender.Female;
+    else //1 for M
+        gender = Gender.Male;
+    
+    name = new Name(B[0], B[1], B[2]);
+    
+    birth = new Birth(C[0], C[1], C[2]);
+    typeUser = D;
+    personID = B[3];
+    email = B[4];
+    phoNum = B[5];
+    country = B[6];
+    city = B[7];
+    password= B[8];
+    
+    
+        
+    }
+    //Metheds
+    void setpassword(String A) {
+        password = A;
+    }
+    String getpassword() {
+        return password;
+    }
+    
+    @override
+    String getAcNum(String IBAN) {
+        String account;
+        for(int i=11; i<IBAN.length(); i++) {
+            account = account + IBAN[i]; 
+            
+        }
+        
+    }
+
+}
+
+class abstract BankAc {
+     String bankName;
+     String IBAN ;
+     String account_number ;
+     String personalID; 
+     
+     void setIBAN(String A) {
+        IBAN = A;
+    }
+    String getIBAN() {
+        return IBAN;
+    }
+    
+    void setID(Strin A) {
+        personalID = A;
+    }
+    String getID() {
+        return personalID;
+    }
+     abstract String getAcNum(String IBAN) ;
+     
+}
+
+
+
+
+class Store {
+    String name;
+    int typeStore ; //0 product 1 service
+    int delivery ; //0 no 1 yes
+    int userID; //commen with userID
+    int storeID;
+    ArrayList<Client> clients ;
+    ArrayList<Sale> sales = new ArrayList<Sale> ();
+    
+    //Constructors
+    Store() {}
+    Store(String A, int [] B ) {
+            name = A;
+            typeStore = B[0] ;
+            delivery = B[1];
+            userID = B[2];
+            
+        }
+        
+     //Metheds
+    void addSale(String A, String B, double C, double D) {
+        sales.add(new Sale(A, B, C, D)); 
+    }
+    void editSale(int choice, int index, String O1, double O2) {
+        switch (choice) {
+            case 1:
+                sales.get(index).name = O1; 
+                break;
+            case 2:
+                sales.get(index).des = O1;
+                break;
+            case 3:
+                sales.get(index).price = O2;
+                break;
+            case 4:
+                sales.get(index).time = O2;
+                break;
+        }
+        
+        
+    }
+    void removeSale(int index) {
+        sales.remove(index);
+    }
+    void setStoreID(int index) {
+        userID = (++index); 
+    }
+    
+    
+
+}
+
+class Sale {
+    String name ;
+    String des; //description of product
+    double price ;
+    double time ;//time to be done
+    
+    
+     //Constructors
+    Sale(String A, String B, double C, double D) {
+        name = A;
+        des = B;
+        price = C; 
+        time = D;
+    }
+}
+
+class ProductSal extends Sale {
+      int id;
+  
+    ProductSal (String A,  String B, double C, double D) {
+        super(A, B, C, D); 
+
+         }
+    
+  void setProductID(int index) {
+        id = (++index); 
+    }
+    
+}
+
+
+class ServiceSal extends Sale {
+    
+    int id;
+    
+    ServiceSal (String A,  String B, double C, double D) {
+        super(A, B, C, D);
+
+    }
+     
+  void setServiceID(int index) {
+        id = (++index); 
+    }
+    
+
+}
+
+
+class Name {
+    String firstName;
+    String secondName;
+    String lastName ;
+    
+    
+    Name() {}
+    Name(String a, String b, String c) {
+        firstName = a;
+        secondName = b;
+        lastName = c; 
+    }
+    
+    //public void PrintName(int x) 
+//    {
+//        if(x== 1)
+//            System.out.print(firstName);
+//        if(x==2)
+//            System.out.print(firstName + " " + secondName);
+//         if(x!=1 && x!= 2)
+//            System.out.print(firstName + " " + secondName+ " "+ lastName);
+//        
+//    }
+}
+
+class Birth {
+    int day;
+    int mounth;
+    int year ;
+    
+    
+    Birth () {}
+    Birth (int a, int b, int c) 
+    {
+        if (a>=1 && a<=31) 
+        {
+            if (b>=1 && a<=12) 
+            {
+                day = a;
+                mounth = b;
+                year = c;
+            }
+        }
+    }
+    public String MounthName (int x) 
+    {
+        String mounthName= null;
+        for (Mounth M : Mounth.values()) 
+        {
+            if (mounth == (M.ordinal() +1))
+                {
+                    mounthName = M.name();
+                    break;
+                }
+        }
+        return mounthName;
+    }
+    
+    public void PrintBirth ()
+    {
+        System.out.print(day+"/" + mounth+ "/" + year);
+    }
+}
+
+
+
+enum Gender {
+    Female,
+    Male
+}
+ 
+
+enum Mounth {
+    January ,
+    February ,
+    March ,
+    April ,
+    May ,
+    June ,
+    July ,
+    August ,
+    September ,
+    October ,
+    November ,
+    December 
+}
+
+
+
+class String_info {
+
+String [] Per_info = {
+        "Gender:", 
+        "Name:",
+         "Birth:" ,
+         "National ID:", 
+         "Country:", 
+         "City:" ,
+         "Email:", 
+         "Phone number:" };
+String [] Sale_info = {
+    "Name:",
+    "Description:", 
+    "Price:",
+    "Time:" }; 
+String [] Store_info = {
+    "Name:", 
+    "Store type:",
+    "Delivery:", }; 
+    
+String [] User= {
+    "Sign up",
+    "Sing in",
+};
+String [] SingIn= {
+    "User ID",
+    "Password",
+};
+    
+String [] Owner_choices = {
+    "Edit personal info", 
+    "Add a new sale", 
+    "Edit an existing sale", 
+    "Delete a specific sale"}; 
+    
+ String [] Client_choices = {
+    "Edit personal info", 
+    "Add a new order", 
+    "Edit an existing order", 
+    "Delete a specific order"}; 
+ String [] Name_info = {
+         "First name:", 
+         "Second name:", 
+         "Last name:"}; 
+ String [] Birth_info = {
+         "Day:", 
+         "Mounth:", 
+         "Year:"}; 
+}
